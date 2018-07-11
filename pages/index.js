@@ -7,6 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
+import SimpleImage from '../components/SimpleImage';
 import SimpleTable from '../components/SimpleTable';
 
 const styles = theme => ({
@@ -25,6 +26,9 @@ const styles = theme => ({
   button: {
     marginBottom: theme.spacing.unit,
   },
+  input: {
+    display: 'none',
+  },
 });
 
 class Index extends React.Component {
@@ -32,6 +36,7 @@ class Index extends React.Component {
     operations: [],
     newOpName: "resize",
     newOpParameter: 128,
+    originalFile: null,
   };
 
   definedOps = [{id: 0, name: "resize"}, {id: 1, name: "quality"}];
@@ -58,9 +63,15 @@ class Index extends React.Component {
     });
   };
 
+  handleFileChange = event => {
+    this.setState({
+      originalFile: URL.createObjectURL(event.target.files[0]),
+    })
+  };
+
   render() {
     const { classes } = this.props;
-    const { operations, newOpName, newOpParameter } = this.state;
+    const { operations, newOpName, newOpParameter, originalFile } = this.state;
 
     return (
       <div className={classes.root}>
@@ -116,6 +127,25 @@ class Index extends React.Component {
         </Typography>
 
         <SimpleTable data={operations}/>
+
+        <Typography variant="subheading" gutterBottom>
+          Original image:
+        </Typography>
+
+        <input
+          accept="image/*"
+          className={classes.input}
+          id="outlined-button-file"
+          type="file"
+          onChange={this.handleFileChange}
+        />
+        <label htmlFor="outlined-button-file">
+          <Button variant="outlined" component="span" className={classes.button}>
+            Upload
+          </Button>
+        </label>
+
+        <SimpleImage data={originalFile}/>
       </div>
     );
   }

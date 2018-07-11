@@ -40,14 +40,19 @@ class Index extends React.Component {
     newFile: null,
   };
 
+  // currently supported operations of image transformations
   definedOps = [{id: 0, name: "resize"}, {id: 1, name: "quality"}];
 
+  // adds new item to the transformations pipeline
   addOperation = () => {
+    // extended check of params could be better
     var numberParam = Number(this.state.newOpParameter);
     if (isNaN(numberParam) || numberParam <= 0) {
+      // using alert dialog from Material UI could be better
       alert("Operation parameter must be a positive number.");
       return;
     }
+
     this.state.operations.push({
       id: this.state.operations.length,
       name: this.state.newOpName,
@@ -71,11 +76,14 @@ class Index extends React.Component {
   };
 
   handleTransform = () => {
+    // using alert dialog from Material UI could be better (or disabling button)
     if (this.state.operations.length == 0) { alert("Transformations pipeline is empty."); return; }
     if (this.state.originalFile == null) { alert("Original image is not set."); return; }
 
+    // read original file using JIMP
     var image = Jimp.read(this.state.originalFile);
 
+    // apply supported transformations to image
     this.state.operations.forEach(op => {
       image.then(img => {
         switch (op.name) {
@@ -91,6 +99,7 @@ class Index extends React.Component {
       });
     });
 
+    // get src of the new file
     image.then(img => {
       img.getBase64(Jimp.AUTO, (err, src) => {
         this.setState({

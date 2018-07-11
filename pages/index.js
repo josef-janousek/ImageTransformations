@@ -37,6 +37,7 @@ class Index extends React.Component {
     newOpName: "resize",
     newOpParameter: 128,
     originalFile: null,
+    newFile: null,
   };
 
   definedOps = [{id: 0, name: "resize"}, {id: 1, name: "quality"}];
@@ -69,9 +70,41 @@ class Index extends React.Component {
     })
   };
 
+  handleTransform = () => {
+    if (this.state.operations.length == 0) { alert("Transformations pipeline is empty."); return; }
+    if (this.state.originalFile == null) { alert("Original image is not set."); return; }
+
+    var image = Jimp.read(this.state.originalFile);
+
+    this.state.operations.forEach(op => {
+      image.then(img => {
+        switch (op.name) {
+          case "resize":
+            img.resize(op.parameter, Jimp.AUTO);
+            break;
+          case "quality":
+            img.quality(op.parameter);
+            break;
+        }
+      }).catch(err => {
+        console.error(err);
+      });
+    });
+
+    image.then(img => {
+      img.getBase64(Jimp.AUTO, (err, src) => {
+        this.setState({
+          newFile: src,
+        });
+      });
+    }).catch(err => {
+      console.error(err);
+    });
+  };
+
   render() {
     const { classes } = this.props;
-    const { operations, newOpName, newOpParameter, originalFile } = this.state;
+    const { operations, newOpName, newOpParameter, originalFile, newFile } = this.state;
 
     return (
       <div className={classes.root}>
@@ -146,6 +179,16 @@ class Index extends React.Component {
         </label>
 
         <SimpleImage data={originalFile}/>
+
+        <Button variant="contained" color="secondary" className={classes.button} onClick={this.handleTransform}>
+          Transform image
+        </Button>
+
+        <Typography variant="subheading" gutterBottom>
+          New image:
+        </Typography>
+
+        <SimpleImage data={newFile}/>
       </div>
     );
   }

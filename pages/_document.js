@@ -26,6 +26,7 @@ class MyDocument extends Document {
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
           />
+          <script src="/static/jimp.min.js"></script>
         </Head>
         <body>
           <Main />

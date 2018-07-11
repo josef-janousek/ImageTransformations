@@ -1,13 +1,8 @@
-# Next.js example
+# Image transformations
 
 ## How to use
 
-Download the example [or clone the repo](https://github.com/mui-org/material-ui):
-
-```bash
-curl https://codeload.github.com/mui-org/material-ui/tar.gz/master | tar -xz --strip=2  material-ui-master/examples/nextjs
-cd nextjs
-```
+Download or clone the repo.
 
 Install it and run:
 
@@ -16,6 +11,8 @@ npm install
 npm run dev
 ```
 
-## The idea behind the example
+## The idea behind
 
 [Next.js](https://github.com/zeit/next.js) is a framework for server-rendered React apps.
+
+[Template](https://github.com/mui-org/material-ui/tree/master/examples/nextjs) for Material UI with Next.js.
